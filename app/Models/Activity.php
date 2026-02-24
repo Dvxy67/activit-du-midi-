@@ -12,7 +12,8 @@ class Activity extends Model
         'description', 
         'activity_date',
         'activity_time',
-        'max_participants'
+        'max_participants',
+        'points_cost',
     ];
 
     protected $casts = [

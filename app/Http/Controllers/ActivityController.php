@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Activity;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class ActivityController extends Controller
 {
@@ -32,9 +33,17 @@ class ActivityController extends Controller
         if ($activity->isFull()) {
             return redirect()->back()->with('error', 'Cette activité est complète.');
         }
+
+        // Vérifier si assez de points ← NOUVEAU
+        if ($user->points < $activity->points_cost) {
+            return redirect()->back()->with('error', 'Vous n\'avez pas assez de points.');
+        }
         
-        // Inscrire l'utilisateur
-        $activity->users()->attach($user->id);
+        // Inscrire l'utilisateur + déduire les points ← NOUVEAU
+        DB::transaction(function () use ($activity, $user) {
+            $activity->users()->attach($user->id);
+            $user->decrement('points', $activity->points_cost);
+        });
         
         return redirect()->back()->with('success', 'Inscription confirmée !');
     }
@@ -43,8 +52,13 @@ class ActivityController extends Controller
     public function unregister(Activity $activity)
     {
         $user = Auth::user();
-        $activity->users()->detach($user->id);
+
+        // Désinscrire + rembourser les points ← NOUVEAU
+        DB::transaction(function () use ($activity, $user) {
+            $activity->users()->detach($user->id);
+            $user->increment('points', $activity->points_cost);
+        });
         
-        return redirect()->back()->with('success', 'Désinscription confirmée.');
+        return redirect()->back()->with('success', 'Désinscription confirmée. Points remboursés.');
     }
 }

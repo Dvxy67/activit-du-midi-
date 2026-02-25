@@ -24,7 +24,7 @@ class ActivityController extends Controller
     // Enregistre une nouvelle activité
     public function store(Request $request)
     {
-        $validated = $request->validate([ 
+        $validated = $request->validate([
             'title'            => 'required|string|max:255',
             'description'      => 'required|string',
             'activity_date'    => 'required|date',
@@ -48,7 +48,7 @@ class ActivityController extends Controller
     // Enregistre les modifications
     public function update(Request $request, Activity $activity)
     {
-        $request->validate([
+        $validated = $request->validate([  // ← le "$validated = " manquait ici
             'title'            => 'required|string|max:255',
             'description'      => 'required|string',
             'activity_date'    => 'required|date',
@@ -57,7 +57,7 @@ class ActivityController extends Controller
             'points_cost'      => 'required|integer|min:0',
         ]);
 
-        $activity->update($request->validated());
+        $activity->update($validated);  // ← et $request->validated() → $validated
 
         return redirect()->route('admin.activities.index')
                          ->with('success', 'Activité mise à jour.');

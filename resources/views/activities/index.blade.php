@@ -164,18 +164,3 @@
         </div>
     </div>
 </x-app-layout>
-
-ean 
-ancient etabis
-ap 06A 24
-
-n 4000253963
-
-140 depuis oaut c'est juste pour l'assurance 
-
-car c'est 20 euro par mois
-
-l'eau: 30 
-a voir si j'ai pas payer d'avantage 
-
-mais si en predn cette de mars cela fait 30 euro aussi donc 200 balles donc 66 euro par personne 

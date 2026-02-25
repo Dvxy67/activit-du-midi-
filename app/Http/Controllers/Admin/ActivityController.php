@@ -24,7 +24,7 @@ class ActivityController extends Controller
     // Enregistre une nouvelle activité
     public function store(Request $request)
     {
-        $request->validate([
+        $validated = $request->validate([ 
             'title'            => 'required|string|max:255',
             'description'      => 'required|string',
             'activity_date'    => 'required|date',
@@ -33,7 +33,7 @@ class ActivityController extends Controller
             'points_cost'      => 'required|integer|min:0',
         ]);
 
-        Activity::create($request->validated());
+        Activity::create($validated);
 
         return redirect()->route('admin.activities.index')
                          ->with('success', 'Activité créée avec succès.');

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ActivityController;
+use App\Http\Controllers\Admin\ActivityController as AdminActivityController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -23,6 +24,11 @@ Route::middleware('auth')->group(function () {
     Route::get('/activities', [ActivityController::class, 'index'])->name('activities.index');
     Route::post('/activities/{activity}/register', [ActivityController::class, 'register'])->name('activities.register');
     Route::delete('/activities/{activity}/unregister', [ActivityController::class, 'unregister'])->name('activities.unregister');
+});
+
+// Routes admin (nécessite d'être connecté ET admin)
+Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
+    Route::resource('activities', AdminActivityController::class)->except(['show']);
 });
 
 require __DIR__.'/auth.php';

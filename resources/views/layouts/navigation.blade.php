@@ -18,6 +18,11 @@
                     <x-nav-link :href="route('activities.index')" :active="request()->routeIs('activities.*')">
                         {{ __('Activités') }}
                     </x-nav-link>
+                    @if(Auth::user()->is_admin)
+                    <x-nav-link :href="route('admin.activities.index')" :active="request()->routeIs('admin.*')">
+                        {{ __('Administration') }}
+                    </x-nav-link>
+                    @endif
                 </div>
             </div>
 
@@ -74,10 +79,14 @@
             <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                 {{ __('Dashboard') }}
             </x-responsive-nav-link>
-
             <x-nav-link :href="route('activities.index')" :active="request()->routeIs('activities.*')">
                 {{ __('Activités') }}
             </x-nav-link>
+            @if(Auth::user()->is_admin)
+            <x-responsive-nav-link :href="route('admin.activities.index')" :active="request()->routeIs('admin.*')">
+                {{ __('Administration') }}
+            </x-responsive-nav-link>
+            @endif
         </div>
 
         <!-- Responsive Settings Options -->
